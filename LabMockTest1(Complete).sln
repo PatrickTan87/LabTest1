@@ -1,31 +1,99 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.11.35222.181
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LabMockTest1(Complete)", "LabMockTest1(Complete).vcxproj", "{4208F6FF-250E-4039-A9AA-33332E89BB39}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Debug|x64.ActiveCfg = Debug|x64
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Debug|x64.Build.0 = Debug|x64
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Debug|x86.ActiveCfg = Debug|Win32
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Debug|x86.Build.0 = Debug|Win32
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Release|x64.ActiveCfg = Release|x64
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Release|x64.Build.0 = Release|x64
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Release|x86.ActiveCfg = Release|Win32
-		{4208F6FF-250E-4039-A9AA-33332E89BB39}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FDE1BA64-9285-41E9-8AC1-D908D4330FC3}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+int main()
+{
+	int roomType, nights;
+	double pricePerNight, subtotal, discount = 0, finalTotal;
+	char promoCode;
+
+	cout << "=========================================\n\n";
+	cout << "     FTMK GRAND HOTEL BOOKING SYSTEM\n\n";
+	cout << "=========================================\n\n";
+	cout << "1. Standard Room - RM150.00 per night\n";
+	cout << "2. Deluxe Room   - RM200.00 per night\n";
+	cout << "3. Suite Room    - RM300.00 per night\n\n";
+	cout << "-----------------------------------------\n\n";
+	cout << "Enter room type (1-3): ";
+	cin >> roomType;
+
+	if (roomType == 1)
+		pricePerNight = 150.00;
+	else if (roomType == 2)
+		pricePerNight = 200.00;
+	else if (roomType == 3)
+		pricePerNight = 300.00;
+	else
+	{
+		cout << "Invalid room type entered!" << endl;
+		return 0;
+	}
+
+	cout << "Enter number of nights: ";
+	cin >> nights;
+
+	if (nights <= 0) 
+	{
+		cout << "Invalid number of nights!" << endl;
+		return 0;
+	}
+
+	cout << endl << endl;
+	cout << "You selected ";
+		if (roomType == 1)
+			cout << "Standard Room.\n\n";
+		else if (roomType == 2) 
+			cout << "Deluxe Room.\n\n";
+		else
+			cout << "Suite Room.\n\n";
+
+	cout << "Do you have a promo code? (Y for yes / N for No): ";
+	cin >> promoCode;
+
+	cout << fixed << setprecision(2);
+
+	subtotal = pricePerNight * nights;
+
+	double discountRate = 0.0;
+	if (nights >= 1 && nights <= 2)
+		discountRate = 0.0;
+	else if (nights >= 3 && nights <= 5)
+		discountRate = 0.05;
+	else if (nights > 5)
+		discountRate = 0.1;
+
+	discount = subtotal * discountRate;
+	finalTotal = subtotal - discount;
+
+	double extraDiscount = 0.0;
+	if (promoCode == 'Y' || promoCode == 'y')
+		extraDiscount = finalTotal * 0.1;
+	discount += extraDiscount;
+	finalTotal -= extraDiscount;
+
+	cout << endl << endl;
+	cout << "------------------ BOOKING SUMMARY ------------------\n\n";
+	cout << "Price per night : RM" << pricePerNight << endl;
+	cout << "Nights Stayed   : " << nights << endl;
+	cout << "Subtotal        : RM" << subtotal << endl;
+	cout << "Discount (" << (discountRate * 100) << "%";
+	if (promoCode == 'Y' || promoCode == 'y') 
+		cout << " + 10%";
+	cout << "): RM" << discount << endl;
+
+	cout << "\n-----------------------------------------------------\n\n";
+	cout << "Final Total     : RM" << finalTotal << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+
+	if (finalTotal >= 1200)
+		cout << "VIP CUSTOMER: You are eligible for free airport transfer!\n";
+	else if (finalTotal < 300)
+		cout << "Enjoy your vacation.\n";
+	else
+		cout << "Thank you for booking with FTMK Grand Hotel.\n";
+
+	cout << "\n=====================================================\n";
+
+	return 0;
+}
