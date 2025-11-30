@@ -1,31 +1,129 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36623.8 d17.14
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lab07_B032510525_Patrick Tan hong Yu", "Lab07_B032510525_Patrick Tan hong Yu\Lab07_B032510525_Patrick Tan hong Yu.vcxproj", "{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Debug|x64.ActiveCfg = Debug|x64
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Debug|x64.Build.0 = Debug|x64
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Debug|x86.ActiveCfg = Debug|Win32
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Debug|x86.Build.0 = Debug|Win32
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Release|x64.ActiveCfg = Release|x64
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Release|x64.Build.0 = Release|x64
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Release|x86.ActiveCfg = Release|Win32
-		{4CDBF52C-E777-4CB1-8C38-1EE4B5AC68D7}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EEB79754-56A5-4652-BAFB-63FC29D9B082}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+double getPrice(int roomType);
+double calculateDiscount(double subtotal, int nights);
+void computeAmounts(double pricePerNight, int nights, double &subtotal, double &discount, double &afterDiscount);
+double applyPromo(double amount);
+void displayMessage(double finalTotal);
+void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal);
+
+double getPrice(int roomType)
+{
+	if (roomType == 1) 
+		return 150.00;
+	if (roomType == 2) 
+		return 200.00;
+	if (roomType == 3)
+		return 300.00;
+	return -1;
+}
+
+double calculateDiscount(double subtotal, int nights)
+{
+	double discountRate = 0.0;
+
+	if (nights >= 3 && nights <= 5)
+		discountRate = 0.05;
+	else if (nights > 5)
+		discountRate = 0.10;
+
+	return subtotal * discountRate;
+}
+
+void computeAmounts(double pricePerNight, int nights, double &subtotal, double &discount, double &afterDiscount)
+{
+	subtotal = pricePerNight * nights;
+	discount = calculateDiscount(subtotal, nights);
+	afterDiscount = subtotal - discount;
+}
+
+double applyPromo(double amount)
+{
+	return amount * 0.10;
+}
+
+void displayMessage(double finalTotal)
+{
+	if (finalTotal >= 1200)
+		cout << "VIP CUSTOMER: You are eligible for free airport transfer!\n";
+	else if (finalTotal < 300)
+		cout << "Enjoy your vacation.\n";
+	else
+		cout << "Thank you for booking with FTMK Grand Hotel.\n";
+}
+
+void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal)
+{
+	cout << "------------------ BOOKING SUMMARY ------------------\n\n";
+	cout << "Price per night : RM" << pricePerNight << endl;
+	cout << "Nights Stayed   : " << nights << endl;
+	cout << "Subtotal        : RM" << subtotal << endl;
+	cout << "Room Discount   : RM" << discount << endl;
+	cout << "Promo Discount  : RM" << promoDiscount << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+	cout << "Final Total     : RM" << finalTotal << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+}
+
+int main()
+{
+	int roomType, nights;
+	char promoCode, moreBooking = 'Y';
+
+	cout << fixed << setprecision(2);
+
+	do
+	{
+		cout << "=========================================\n\n";
+		cout << "     FTMK GRAND HOTEL BOOKING SYSTEM\n\n";
+		cout << "=========================================\n\n";
+		cout << "1. Standard Room - RM150.00 per night\n";
+		cout << "2. Deluxe Room   - RM200.00 per night\n";
+		cout << "3. Suite Room    - RM300.00 per night\n\n";
+		cout << "-----------------------------------------\n\n";
+		cout << "Enter room type (1-3): ";
+		cin >> roomType;
+
+		double pricePerNight = getPrice(roomType);
+		if (pricePerNight == -1)
+		{
+			cout << "Invalid room type entered! Please try again.\n\n";
+			continue;
+		}
+
+		cout << "Enter number of nights: ";
+		cin >> nights;
+
+		if (nights <= 0)
+		{
+			cout << "Invalid number of nights entered! Please try again.\n\n";
+			continue;
+		}
+
+		cout << "Do you have a promo code? (Y for yes / N for No): ";
+		cin >> promoCode;
+
+		double subtotal, discount, afterDiscount;
+		computeAmounts(pricePerNight, nights, subtotal, discount, afterDiscount);
+
+		double promoDiscount = 0.0;
+		if (promoCode == 'Y' || promoCode == 'y')
+			promoDiscount = applyPromo(afterDiscount);
+
+		double finalTotal = afterDiscount - promoDiscount;
+
+		displaySummary(pricePerNight, nights, subtotal, discount, promoDiscount, finalTotal);
+		displayMessage(finalTotal);
+
+		cout << "\nDo you want to make another booking? (Y/N): ";
+		cin >> moreBooking;
+
+		cout << "\n\n";
+	} while (moreBooking == 'Y' || moreBooking == 'y');
+
+	cout << "\nThank you for using FTMK Grand Hotel Booking System!\n";
+
+	return 0;
+}
