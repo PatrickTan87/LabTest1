@@ -4,16 +4,17 @@ using namespace std;
 
 double getPrice(int roomType);
 double calculateDiscount(double subtotal, int nights);
-void computeAmounts(double pricePerNight, int nights, double &subtotal, double &discount, double &afterDiscount);
+void computeAmounts(double pricePerNight, int nights, double& subtotal, double& discount, double& afterDiscount);
 double applyPromo(double amount);
 void displayMessage(double finalTotal);
 void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal);
+void displayFinalPayment(double grandTotal);
 
 double getPrice(int roomType)
 {
-	if (roomType == 1) 
+	if (roomType == 1)
 		return 150.00;
-	if (roomType == 2) 
+	if (roomType == 2)
 		return 200.00;
 	if (roomType == 3)
 		return 300.00;
@@ -32,7 +33,7 @@ double calculateDiscount(double subtotal, int nights)
 	return subtotal * discountRate;
 }
 
-void computeAmounts(double pricePerNight, int nights, double &subtotal, double &discount, double &afterDiscount)
+void computeAmounts(double pricePerNight, int nights, double& subtotal, double& discount, double& afterDiscount)
 {
 	subtotal = pricePerNight * nights;
 	discount = calculateDiscount(subtotal, nights);
@@ -56,6 +57,7 @@ void displayMessage(double finalTotal)
 
 void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal)
 {
+	cout << endl;
 	cout << "------------------ BOOKING SUMMARY ------------------\n\n";
 	cout << "Price per night : RM" << pricePerNight << endl;
 	cout << "Nights Stayed   : " << nights << endl;
@@ -67,10 +69,18 @@ void displaySummary(double pricePerNight, int nights, double subtotal, double di
 	cout << "\n-----------------------------------------------------\n\n";
 }
 
+void displayFinalPayment(double grandTotal)
+{
+	cout << "\n---------------FINAL PAYMENT SUMMARY-----------------\n\n";
+	cout << "Total Amount for All Bookings: RM" << grandTotal << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+}
+
 int main()
 {
 	int roomType, nights;
 	char promoCode, moreBooking = 'Y';
+	double grandTotal = 0.0;
 
 	cout << fixed << setprecision(2);
 
@@ -113,6 +123,7 @@ int main()
 			promoDiscount = applyPromo(afterDiscount);
 
 		double finalTotal = afterDiscount - promoDiscount;
+		grandTotal += finalTotal;
 
 		displaySummary(pricePerNight, nights, subtotal, discount, promoDiscount, finalTotal);
 		displayMessage(finalTotal);
@@ -120,10 +131,13 @@ int main()
 		cout << "\nDo you want to make another booking? (Y/N): ";
 		cin >> moreBooking;
 
-		cout << "\n\n";
+		cout << endl;
 	} while (moreBooking == 'Y' || moreBooking == 'y');
 
-	cout << "\nThank you for using FTMK Grand Hotel Booking System!\n";
+	displayFinalPayment(grandTotal);
+
+	cout << "Thank you for using FTMK Grand Hotel Booking System!\n";
 
 	return 0;
 }
+
