@@ -10,72 +10,6 @@ void displayMessage(double finalTotal);
 void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal);
 void displayFinalPayment(double grandTotal);
 
-double getPrice(int roomType)
-{
-	if (roomType == 1)
-		return 150.00;
-	if (roomType == 2)
-		return 200.00;
-	if (roomType == 3)
-		return 300.00;
-	return -1;
-}
-
-double calculateDiscount(double subtotal, int nights)
-{
-	double discountRate = 0.0;
-
-	if (nights >= 3 && nights <= 5)
-		discountRate = 0.05;
-	else if (nights > 5)
-		discountRate = 0.10;
-
-	return subtotal * discountRate;
-}
-
-void computeAmounts(double pricePerNight, int nights, double& subtotal, double& discount, double& afterDiscount)
-{
-	subtotal = pricePerNight * nights;
-	discount = calculateDiscount(subtotal, nights);
-	afterDiscount = subtotal - discount;
-}
-
-double applyPromo(double amount)
-{
-	return amount * 0.10;
-}
-
-void displayMessage(double finalTotal)
-{
-	if (finalTotal >= 1200)
-		cout << "VIP CUSTOMER: You are eligible for free airport transfer!\n";
-	else if (finalTotal < 300)
-		cout << "Enjoy your vacation.\n";
-	else
-		cout << "Thank you for booking with FTMK Grand Hotel.\n";
-}
-
-void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal)
-{
-	cout << endl;
-	cout << "------------------ BOOKING SUMMARY ------------------\n\n";
-	cout << "Price per night : RM" << pricePerNight << endl;
-	cout << "Nights Stayed   : " << nights << endl;
-	cout << "Subtotal        : RM" << subtotal << endl;
-	cout << "Room Discount   : RM" << discount << endl;
-	cout << "Promo Discount  : RM" << promoDiscount << endl;
-	cout << "\n-----------------------------------------------------\n\n";
-	cout << "Final Total     : RM" << finalTotal << endl;
-	cout << "\n-----------------------------------------------------\n\n";
-}
-
-void displayFinalPayment(double grandTotal)
-{
-	cout << "\n---------------FINAL PAYMENT SUMMARY-----------------\n\n";
-	cout << "Total Amount for All Bookings: RM" << grandTotal << endl;
-	cout << "\n-----------------------------------------------------\n\n";
-}
-
 int main()
 {
 	int roomType, nights;
@@ -141,3 +75,68 @@ int main()
 	return 0;
 }
 
+double getPrice(int roomType)
+{
+	if (roomType == 1)
+		return 150.00;
+	if (roomType == 2)
+		return 200.00;
+	if (roomType == 3)
+		return 300.00;
+	return -1;
+}
+
+double calculateDiscount(double subtotal, int nights)
+{
+	double discountRate = 0.0;
+
+	if (nights >= 3 && nights <= 5)
+		discountRate = 0.05;
+	else if (nights > 5)
+		discountRate = 0.10;
+
+	return subtotal * discountRate;
+}
+
+void computeAmounts(double pricePerNight, int nights, double& subtotal, double& discount, double& afterDiscount)
+{
+	subtotal = pricePerNight * nights;
+	discount = calculateDiscount(subtotal, nights);
+	afterDiscount = subtotal - discount;
+}
+
+double applyPromo(double amount)
+{
+	return amount * 0.10;
+}
+
+void displayMessage(double finalTotal)
+{
+	if (finalTotal >= 1200)
+		cout << "VIP CUSTOMER: You are eligible for free airport transfer!\n";
+	else if (finalTotal < 300)
+		cout << "Enjoy your vacation.\n";
+	else
+		cout << "Thank you for booking with FTMK Grand Hotel.\n";
+}
+
+void displaySummary(double pricePerNight, int nights, double subtotal, double discount, double promoDiscount, double finalTotal)
+{
+	cout << endl;
+	cout << "------------------ BOOKING SUMMARY ------------------\n\n";
+	cout << "Price per night : RM" << pricePerNight << endl;
+	cout << "Nights Stayed   : " << nights << endl;
+	cout << "Subtotal        : RM" << subtotal << endl;
+	cout << "Room Discount   : RM" << discount << endl;
+	cout << "Promo Discount  : RM" << promoDiscount << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+	cout << "Final Total     : RM" << finalTotal << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+}
+
+void displayFinalPayment(double grandTotal)
+{
+	cout << "\n---------------FINAL PAYMENT SUMMARY-----------------\n\n";
+	cout << "Total Amount for All Bookings: RM" << grandTotal << endl;
+	cout << "\n-----------------------------------------------------\n\n";
+}
